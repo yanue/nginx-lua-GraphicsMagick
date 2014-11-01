@@ -48,6 +48,7 @@ img.xxx.com
 ## 安装
 
 #### nginx vhost 配置
+```bash
 server {
     listen   80;
 
@@ -95,8 +96,10 @@ server {
         deny all;
     }
 }
+```
 
 #### lua文件
+```bash
 -- 检测路径是否目录
 local function is_dir(sPath)
     if type(sPath) ~= "string" then return false end
@@ -160,4 +163,6 @@ if (file_exists(ngx.var.request_filepath)) then
 else
     ngx.exit(ngx.HTTP_NOT_FOUND);
 end
+```
 
+参考:https://github.com/hopesoft/nginx-lua-image-module
