@@ -1,3 +1,8 @@
+-- nginx lua thumbnail module
+-- last update : 2014/11/3
+-- version     : 0.5.0
+-- created by yanne
+
 -- 检测路径是否目录
 local function is_dir(sPath)
     if type(sPath) ~= "string" then return false end
@@ -43,17 +48,19 @@ end
 -- 开始执行
 -- ngx.log(ngx.ERR, getFileDir(ngx.var.file));
 
-local gm_path = '/usr/local/bin/gm'
+local gm_path = 'gm'
 
 -- check image dir
 if not is_dir(getFileDir(ngx.var.file)) then
     os.execute("mkdir -p " .. getFileDir(ngx.var.file))
 end
 
--- 如果原始文件存在,则缩放(以最小边)
+-- 裁剪后保证等比缩图 （缺点：裁剪了图片的一部分）
+-- gm convert input.jpg -thumbnail "100x100^" -gravity center -extent 100x100 output_3.jpg
 if (file_exists(ngx.var.request_filepath)) then
     local cmd = gm_path .. ' convert ' .. ngx.var.request_filepath
-    cmd = cmd .. " -resize " .. ngx.var.img_width .. "x" .. ngx.var.img_height
+    cmd = cmd .. " -thumbnail " .. ngx.var.img_width .. "x" .. ngx.var.img_height .. "^"
+    cmd = cmd .. " -gravity center -extent " .. ngx.var.img_width .. "x" .. ngx.var.img_height
     cmd = cmd .. " +profile \"*\" " .. ngx.var.file;
     ngx.log(ngx.ERR, cmd);
     os.execute(cmd);
@@ -61,4 +68,3 @@ if (file_exists(ngx.var.request_filepath)) then
 else
     ngx.exit(ngx.HTTP_NOT_FOUND);
 end
-
