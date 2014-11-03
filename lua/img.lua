@@ -1,7 +1,7 @@
 -- nginx lua thumbnail module
+-- created by yanue
 -- last update : 2014/11/3
--- version     : 0.5.0
--- created by yanne
+-- version     : 0.5.1
 
 -- 检测路径是否目录
 local function is_dir(sPath)
@@ -47,6 +47,8 @@ end
 
 -- 开始执行
 -- ngx.log(ngx.ERR, getFileDir(ngx.var.file));
+-- ngx.log(ngx.ERR,ngx.var.file);
+-- ngx.log(ngx.ERR,ngx.var.request_filepath);
 
 local gm_path = 'gm'
 
@@ -56,7 +58,7 @@ if not is_dir(getFileDir(ngx.var.file)) then
 end
 
 -- 裁剪后保证等比缩图 （缺点：裁剪了图片的一部分）
--- gm convert input.jpg -thumbnail "100x100^" -gravity center -extent 100x100 output_3.jpg
+-- 命令：gm convert input.jpg -thumbnail "100x100^" -gravity center -extent 100x100 output_3.jpg
 if (file_exists(ngx.var.request_filepath)) then
     local cmd = gm_path .. ' convert ' .. ngx.var.request_filepath
     cmd = cmd .. " -thumbnail " .. ngx.var.img_width .. "x" .. ngx.var.img_height .. "^"
