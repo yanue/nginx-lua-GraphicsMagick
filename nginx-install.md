@@ -1,4 +1,4 @@
-nginx install
+nginx-lua-GraphicsMagick install 
 ============
 0. before ready
 ---------------
