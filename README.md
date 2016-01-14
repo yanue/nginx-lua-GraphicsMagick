@@ -1,15 +1,15 @@
 # nginx-lua-GraphicsMagick
-Nginx+Lua+GraphicsMagick，实现自定义图片尺寸功能，支持FastDFS文件存储
+Nginx+Lua+GraphicsMagick，实现自定义图片尺寸功能，支持两种模式[固定高宽模式,定高或定宽模式]，支持FastDFS文件存储
 
 ## 说明
-- 类似淘宝图片，实现自定义图片尺寸功能，可根据图片加后缀_100x100.jpg形式实现自定义输出图片大小。
+- 类似淘宝图片，实现自定义图片尺寸功能，可根据图片加后缀_100x100.jpg(固定高宽),_-100.jpg(定高),_100-.jpg(定宽)形式实现自定义输出图片大小。
 - 主要将自定义尺寸的图片放在完全独立的thumb目录（自定义目录）,并保持原有的图片目录结构。
 
 ## 2016-01-14更新说明
 - 新增定高或定宽裁切模式
- 左右结构,用"-"号区分未知高或未知宽("-"号不会被浏览器url转义),如
- 如: xx.jpg_100-.jpg 宽100,高自动
- 如: xx.jpg_-100.jpg 高100,宽自动
+  左右结构,用"-"号区分未知高或未知宽("-"号不会被浏览器url转义),如
+  如: xx.jpg_100-.jpg 宽100,高自动
+  如: xx.jpg_-100.jpg 高100,宽自动
 - 新增 php 动态获取图片尺寸的类文件
 
 #### 文件夹规划
@@ -33,18 +33,18 @@ thumb（如/tmp/thumb,可在conf文件里面更改）
             |-- 001_-100.jpg 定高
             |-- 001_200-.jpg 定宽
 ```
-- 其中img.xxx.com为图片站点根目录，img1,img2...目录是原图目录，可根据目录设置不同的缩略图尺寸，
-- thumb文件夹用来存放缩略图，可定时清理。
+- 其中img.xxx.com为图片站点根目录，img1,img2...目录是原图目录
+- 缩略图目录根据保持原有结构，并单独设置目录，可定时清理。
 
 #### 链接地址对应关系
 * 原图访问地址：```http://img.xxx.com/xx/001/001.jpg```
 * 缩略图访问地址：```http://img.xxx.com/xx/001/001.jpg_100x100.jpg``` 即为宽100,高100
-* 自动宽地址: ```http://img.xxx.com/xx/001/001.jpg_-100.jpg``` 用-表示自动,即为高100,宽自动
-* 自动高地址: ```http://img.xxx.com/xx/001/001.jpg_100-.jpg``` 用-表示自动,即为宽100,高自动
+* 自动宽地址: ```http://img.xxx.com/xx/001/001.jpg_-100.jpg``` 用"-"表示自动,即为高100,宽自动
+* 自动高地址: ```http://img.xxx.com/xx/001/001.jpg_100-.jpg``` 用"-"表示自动,即为宽100,高自动
 
 #### 访问流程
 * 首先判断缩略图是否存在，如存在则直接显示缩略图；
-* 缩略图不存在,则判断原图是否存在，如原图存在则拼接graphicsmagick命令,生成并显示缩略图,否则返回404
+* 缩略图不存在,则判断原图是否存在，如原图存在则拼接graphicsmagick(gm)命令,生成并显示缩略图,否则返回404
 
 ## 安装
 CentOS6 安装过程见 [nginx+lua+GraphicsMagick安装](nginx-install.md)
@@ -84,11 +84,11 @@ CentOS6 安装过程见 [nginx+lua+GraphicsMagick安装](nginx-install.md)
   * inotify(可选)
 
 ### 配置文件说明
-* nginx 配置文件 /etc/nginx
-* vhost 为站点配置
+##### nginx 配置文件 /etc/nginx
+##### vhost 为站点配置
 -  [demo.conf](vhost/demo.conf) 为 普通站点 配置文件,包含固定高宽和定高,定宽两种模式配置
 -  [fdfs.conf](vhost/fdfs.conf) 为 fastdfs 配置文件,包含固定高宽和定高,定宽两种模式配置
-* lua 为裁切图片处理目录
+##### lua 为裁切图片处理目录
 -  [autoSize.lua](lua/autoSize.lua) 定高或定宽模式裁切图片处理lua脚本
 -  [cropSize.lua](lua/cropSize.lua) 固定高宽模式裁切图片处理lua脚本
   
@@ -197,6 +197,6 @@ server{
 }
 ```
 ### 最后说明
-lua 脚本处理并未做任何图片尺寸限制,这样很容易被恶意改变宽和高参数而随意生成大量文件,浪费资源和空间,请根据直接情况自行处理
+- lua 脚本处理并未做任何图片尺寸限制,这样很容易被恶意改变宽和高参数而随意生成大量文件,浪费资源和空间,请根据直接情况自行处理
 
 参考:https://github.com/hopesoft/nginx-lua-image-module
