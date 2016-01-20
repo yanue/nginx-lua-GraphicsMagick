@@ -52,15 +52,18 @@ if not is_dir(getFileDir(ngx.var.img_file)) then
     os.execute("mkdir -p " .. getFileDir(ngx.var.img_file))
 end
 
-    ngx.log(ngx.ERR,ngx.var.img_file);
-    ngx.log(ngx.ERR,ngx.var.request_filepath);
+--  ngx.log(ngx.ERR,ngx.var.img_file);
+--  ngx.log(ngx.ERR,ngx.var.request_filepath);
+
 -- 裁剪后保证等比缩图 （缺点：裁剪了图片的一部分）
--- gm convert input.jpg -thumbnail "100x100^" -gravity center -extent 100x100 output_3.jpg
+-- gm convert cropSize.jpg -thumbnail 300x300^ -gravity center -extent 300x300 -quality 100 +profile "*" cropSize.jpg_300x300.jpg
 if (file_exists(ngx.var.request_filepath)) then
     local cmd = gm_path .. ' convert ' .. ngx.var.request_filepath
     cmd = cmd .. " -thumbnail " .. ngx.var.img_width .. "x" .. ngx.var.img_height .. "^"
     cmd = cmd .. " -gravity center -extent " .. ngx.var.img_width .. "x" .. ngx.var.img_height
---  cmd = cmd .. " -quality 100"
+
+    -- 由于压缩后比较模糊,默认图片质量为100,请根据自己情况修改quality
+    cmd = cmd .. " -quality 100"
     cmd = cmd .. " +profile \"*\" " .. ngx.var.img_file;
 --  ngx.log(ngx.ERR, cmd);
     os.execute(cmd);

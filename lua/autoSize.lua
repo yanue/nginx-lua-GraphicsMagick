@@ -74,7 +74,7 @@ ngx.log(ngx.ERR,height)
     ngx.log(ngx.ERR,ngx.var.img_file);
     ngx.log(ngx.ERR,ngx.var.request_filepath);
 -- 裁剪后保证等比缩图 （缺点：裁剪了图片的一部分）
--- gm convert input.jpg -thumbnail "100x100^" -gravity center -extent 100x100 output_3.jpg
+-- 如: gm convert autoSize.jpg -resize x200 -quality 100 +profile "*" autoSize.jpg_-200.jpg
 if (file_exists(ngx.var.request_filepath)) then
     local cmd = gm_path .. ' convert ' .. ngx.var.request_filepath
     if height == 0 then
@@ -83,6 +83,8 @@ if (file_exists(ngx.var.request_filepath)) then
         cmd = cmd .. " -resize " .. "x" .. height .. ""
     end
 
+-- 由于压缩后比较模糊,默认图片质量为100,请根据自己情况修改quality
+    cmd = cmd .. " -quality 100"
     cmd = cmd .. " +profile \"*\" " .. ngx.var.img_file;
     ngx.log(ngx.ERR, cmd);
     os.execute(cmd);
