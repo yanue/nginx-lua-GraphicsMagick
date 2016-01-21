@@ -1,6 +1,8 @@
 # nginx-lua-GraphicsMagick
 Nginx+Lua+GraphicsMagick，实现自定义图片尺寸功能，支持两种模式[固定高宽模式,定高或定宽模式]，支持FastDFS文件存储
 
+  github地址:[https://github.com/yanue/nginx-lua-GraphicsMagick](https://github.com/yanue/nginx-lua-GraphicsMagick)
+
 ## 说明
 - 类似淘宝图片，实现自定义图片尺寸功能，可根据图片加后缀_100x100.jpg(固定高宽),_-100.jpg(定高),_100-.jpg(定宽)形式实现自定义输出图片大小。
 - 主要将自定义尺寸的图片放在完全独立的thumb目录（自定义目录）,并保持原有的图片目录结构。
