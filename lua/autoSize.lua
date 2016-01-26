@@ -68,11 +68,11 @@ else
   width = string.sub(uri,1,string.len(uri)-1)
   height = 0
 end
-ngx.log(ngx.ERR,uri)
-ngx.log(ngx.ERR,width)
-ngx.log(ngx.ERR,height)
-    ngx.log(ngx.ERR,ngx.var.img_file);
-    ngx.log(ngx.ERR,ngx.var.request_filepath);
+-- ngx.log(ngx.ERR,uri)
+-- ngx.log(ngx.ERR,width)
+-- ngx.log(ngx.ERR,height)
+-- ngx.log(ngx.ERR,ngx.var.img_file);
+-- ngx.log(ngx.ERR,ngx.var.request_filepath);
 -- 裁剪后保证等比缩图 （缺点：裁剪了图片的一部分）
 -- 如: gm convert autoSize.jpg -resize x200 -quality 100 +profile "*" autoSize.jpg_-200.jpg
 if (file_exists(ngx.var.request_filepath)) then
