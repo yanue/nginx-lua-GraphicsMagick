@@ -30,7 +30,8 @@
         NSString *fileName = [[picUrl pathComponents] lastObject];
         
         NSMutableString *newFileName = [NSMutableString stringWithString:[fileName copy]];
-        if ([fileName containsString:@"_"]) {
+        NSRange range = [fileName rangeOfString:@"_((\d+\-)|(\-\d+))\.(jpg|jpeg|gif|png)$" options:NSRegularExpressionSearch];
+        if (range.location != NSNotFound) {
             newFileName = [NSMutableString stringWithString:[fileName componentsSeparatedByString:@"_"][0]];
         }
         
@@ -46,7 +47,7 @@
 }
 
 // 获取固定大小图片地址
-+ (NSURL *)transformUrl:(NSURL *)picUrl ToSize:(CGSize)confirmSize {
++ (NSURL *)transformUrl:(NSURL *)picUrl ToSize:(CGSize)confirmSize andTimes:(CGFloat) time{
     
     NSString *host = [picUrl host];
     
@@ -63,13 +64,14 @@
         NSMutableString *newFileName = [NSMutableString stringWithString:[fileName copy]];
         NSMutableString *picUrlStr = [NSMutableString stringWithString:[picUrl absoluteString]];
         NSURL *newPicUrl;
-        if ([fileName containsString:@"_"]) {
+        NSRange range = [fileName rangeOfString:@"_((\d+\-)|(\-\d+))\.(jpg|jpeg|gif|png)$" options:NSRegularExpressionSearch];
+        if (range.location != NSNotFound) {
             newFileName = [NSMutableString stringWithString:[fileName componentsSeparatedByString:@"_"][0]];
             [picUrlStr replaceCharactersInRange:[picUrlStr rangeOfString:fileName] withString:newFileName];
             newPicUrl = [NSURL URLWithString:picUrlStr];
         }
         
-        NSString *sizeStr = [NSString stringWithFormat:@"_%.fx%.f.png", confirmSize.width*1.5, confirmSize.height*1.5];
+        NSString *sizeStr = [NSString stringWithFormat:@"_%.fx%.f.png", confirmSize.width*time, confirmSize.height*time];
         [newFileName appendString:sizeStr];
         fileName = [[picUrl pathComponents] lastObject];
         [picUrlStr replaceCharactersInRange:[picUrlStr rangeOfString:fileName] withString:newFileName];
@@ -82,7 +84,7 @@
 }
 
 // 获取固定宽自动高图片地址
-+ (NSURL *)transformUrl:(NSURL *)picUrl ToWidth:(CGFloat)width {
++ (NSURL *)transformUrl:(NSURL *)picUrl ToWidth:(CGFloat)width andTimes:(CGFloat) time{
     
     NSString *host = [picUrl host];
     
@@ -99,13 +101,14 @@
         NSMutableString *newFileName = [NSMutableString stringWithString:[fileName copy]];
         NSMutableString *picUrlStr = [NSMutableString stringWithString:[picUrl absoluteString]];
         NSURL *newPicUrl;
-        if ([fileName containsString:@"_"]) {
+        NSRange range = [fileName rangeOfString:@"_((\d+\-)|(\-\d+))\.(jpg|jpeg|gif|png)$" options:NSRegularExpressionSearch];
+        if (range.location != NSNotFound) {
             newFileName = [NSMutableString stringWithString:[fileName componentsSeparatedByString:@"_"][0]];
             [picUrlStr replaceCharactersInRange:[picUrlStr rangeOfString:fileName] withString:newFileName];
             newPicUrl = [NSURL URLWithString:picUrlStr];
         }
         
-        NSString *sizeStr = [NSString stringWithFormat:@"_%.f-.jpg", width*1.5];
+        NSString *sizeStr = [NSString stringWithFormat:@"_%.f-.jpg", width*time];
         [newFileName appendString:sizeStr];
         fileName = [[picUrl pathComponents] lastObject];
         [picUrlStr replaceCharactersInRange:[picUrlStr rangeOfString:fileName] withString:newFileName];
@@ -118,7 +121,7 @@
 }
 
 // 获取固定高自动宽图片地址
-+ (NSURL *)transformUrl:(NSURL *)picUrl ToHeight:(CGFloat)height {
++ (NSURL *)transformUrl:(NSURL *)picUrl ToHeight:(CGFloat)height andTimes:(CGFloat) time{
     
     NSString *host = [picUrl host];
     
@@ -135,13 +138,14 @@
         NSMutableString *newFileName = [NSMutableString stringWithString:[fileName copy]];
         NSMutableString *picUrlStr = [NSMutableString stringWithString:[picUrl absoluteString]];
         NSURL *newPicUrl;
-        if ([fileName containsString:@"_"]) {
+        NSRange range = [fileName rangeOfString:@"_((\d+\-)|(\-\d+))\.(jpg|jpeg|gif|png)$" options:NSRegularExpressionSearch];
+        if (range.location != NSNotFound) {
             newFileName = [NSMutableString stringWithString:[fileName componentsSeparatedByString:@"_"][0]];
             [picUrlStr replaceCharactersInRange:[picUrlStr rangeOfString:fileName] withString:newFileName];
             newPicUrl = [NSURL URLWithString:picUrlStr];
         }
         
-        NSString *sizeStr = [NSString stringWithFormat:@"_-%.f.jpg", height*1.5];
+        NSString *sizeStr = [NSString stringWithFormat:@"_-%.f.jpg", height*time];
         [newFileName appendString:sizeStr];
         fileName = [[picUrl pathComponents] lastObject];
         [picUrlStr replaceCharactersInRange:[picUrlStr rangeOfString:fileName] withString:newFileName];
