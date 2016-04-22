@@ -8,6 +8,7 @@ useradd -g www www -s /bin/false
 
 yum install -y gcc gcc-c++ zlib zlib-devel openssl openssl-devel pcre pcre-devel
 yum install -y libpng libjpeg libpng-devel libjpeg-devel ghostscript libtiff libtiff-devel freetype freetype-devel
+yum install -y GraphicsMagick GraphicsMagick-devel
 ```
 1. download software
 --------------------
@@ -18,7 +19,6 @@ cd /usr/local/src
 ```bash
 wget http://nginx.org/download/nginx-1.8.0.tar.gz
 wget http://luajit.org/download/LuaJIT-2.0.4.tar.gz ### LuaJIT
-wget ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/1.3/GraphicsMagick-1.3.21.tar.gz ### GraphicsMagick
 wget http://zlib.net/zlib-1.2.8.tar.gz
 ```
 ### nginx module 
@@ -50,15 +50,8 @@ export LUAJIT_INC=/usr/local/include/luajit-2.0
 ln -s /usr/local/lib/libluajit-5.1.so.2 /lib64/libluajit-5.1.so.2
 cd ..
 ```
-#### 2.2 install GraphicsMagick
-```bash
-cd GraphicsMagick-1.3.21
-./configure --enable-shared --with-jpeg=yes  --with-png=yes
-make -j8
-make install
-cd ..
-```
-#### 2.3 install nginx
+
+#### 2.2 install nginx
 ```bash
 cd nginx-1.8.0
 ./configure --prefix=/usr/local/nginx \
