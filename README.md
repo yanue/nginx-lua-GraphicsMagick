@@ -14,6 +14,14 @@ Nginx+Lua+GraphicsMagick，实现自定义图片尺寸功能，支持两种模�
   如: xx.jpg_-100.jpg 高100,宽自动
 - 新增 php 动态获取图片尺寸的类文件
 
+## 2016-04-22更新说明
+- 新增图片含有 query 参数图片裁剪的支持(做了伪静态跳转)
+  列如: 
+  xxx.jpg?a=b&c=d_750x750.jpg
+  xxx.jpg?params_750x750.jpg
+  最终跳转为:
+  xxx.jpg_750x750.jpg
+  
 #### 文件夹规划
 ```bash
 img.xxx.com(如/var/www/img)
